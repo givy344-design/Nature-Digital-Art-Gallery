@@ -1,0 +1,66 @@
+
+// Gallery category filters
+const filterButtons = document.querySelectorAll('.filters button');
+const artCards = document.querySelectorAll('.art-card');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+
+        filterButtons.forEach(btn =>
+            btn.classList.remove('active')
+        );
+
+        button.classList.add('active');
+
+        const category = button.dataset.filter;
+
+        artCards.forEach(card => {
+            if (
+                category === 'all' ||
+                card.dataset.category === category
+            ) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    });
+});
+
+// Image preview
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxTitle = document.getElementById('lightbox-title');
+const closeButton = document.getElementById('close');
+
+document.querySelectorAll('.view-btn').forEach(button => {
+    button.addEventListener('click', () => {
+
+        const card = button.closest('.art-card');
+        const image = card.querySelector('img');
+
+        lightboxImg.src = image.src;
+        lightboxTitle.textContent =
+            card.querySelector('h3').textContent;
+
+        lightbox.classList.add('show');
+    });
+});
+
+// Close image preview
+closeButton.addEventListener('click', () => {
+    lightbox.classList.remove('show');
+});
+
+lightbox.addEventListener('click', event => {
+    if (event.target === lightbox) {
+        lightbox.classList.remove('show');
+    }
+});
+
+// Close preview using Escape key
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+        lightbox.classList.remove('show');
+    }
+});
